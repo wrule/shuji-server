@@ -13,13 +13,13 @@ func main() {
 
 	server.OnConnect("/", func(s socketio.Conn) error {
 		s.SetContext("")
-		fmt.Println("connected:", s.ID())
+		fmt.Println("新的客户端连接:", s.ID())
 		return nil
 	})
 
-	server.OnEvent("/", "notice", func(s socketio.Conn, msg string) {
-		fmt.Println("notice:", msg)
-		s.Emit("reply", "have "+msg)
+	server.OnEvent("/", "num", func(s socketio.Conn, num int) {
+		fmt.Println("num:", num)
+		// s.Emit("reply", "have "+msg)
 	})
 
 	server.OnError("/", func(s socketio.Conn, e error) {
@@ -27,7 +27,7 @@ func main() {
 	})
 
 	server.OnDisconnect("/", func(s socketio.Conn, reason string) {
-		fmt.Println("closed", reason)
+		fmt.Println("连接关闭:", reason)
 	})
 
 	go server.Serve()
